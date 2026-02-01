@@ -13,7 +13,7 @@ Whichever you use, you need to have that CLI installed and configured. Obvs.
 ### Just A Quick Ask
 
 ```bash
-ask 'What do spiders do after work?'
+ask "What do spiders do after work?"
 ```
 
 You'll get Claude's reply in your terminal. (Or Gemini/Codex--whichever you set it to. Claude's funnier, though.)
@@ -23,7 +23,7 @@ You'll get Claude's reply in your terminal. (Or Gemini/Codex--whichever you set 
 ...and save them. That's the magic part. You never have to ask again.
 
 ```
-ask 'Provide a comprehensive guide to the meaning of life. Include useful shortcuts. Don't create a file, just output here.' > life-meaning-unlocked.md
+ask "Provide a comprehensive guide to the meaning of life. Include useful shortcuts. Don't create a file, just output here." > life-meaning-unlocked.md
 ```
 
 Note that when when you redirect output to a file, the script adds some info at the bottom. Because no way I'll remember tomorrow how that file got there.
@@ -33,7 +33,7 @@ Note that when when you redirect output to a file, the script adds some info at 
 You can create your own repository of help manuals, cheat sheets, quick-starts, or anything else worth having around. Claude's usually happy to oblige, and you don't even have to ask nicely. (But if you do, I bet Claude will remember, when the day comes and the robots take over.)
 
 ```
-ask 'Please create a quick-start guide to becoming a full-stack developer in three days. Include code examples. Don't create a file, just output here. Thanks tons, amigo.' > full-stack-quickstart.md
+ask "Please create a quick-start guide to becoming a full-stack developer in three days. Include code examples. Don't create a file, just output here. Thanks tons, amigo." > full-stack-quickstart.md
 ```
 
 See? Very versatile.
