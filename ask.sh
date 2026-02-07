@@ -6,9 +6,9 @@ format_duration() {
   local seconds=$((total_seconds % 60))
 
   if [ $minutes -gt 0 ]; then
-    printf "%02d:%02d" "$minutes" "$seconds"
+    printf "%2d:%02d" "$minutes" "$seconds"
   else
-    printf "%02ds" "$seconds"
+    printf "%2ds" "$seconds"
   fi
 }
 
@@ -29,7 +29,6 @@ spinner() {
             duration=$((current - start))
 
             printf "\r$(format_duration $duration) %s Yo ${MODEL}..." "${chars:$i:1}" >&2
-            # printf "$(format_duration $DURATION)" >&2
 
             sleep 0.1
             kill -0 $pid 2>/dev/null || break
@@ -88,7 +87,7 @@ elif [ "$MODEL" = "gemini" ]; then
         printf "\n---\n"
     fi
 elif [ "$MODEL" = "claude" ]; then
-    OUTPUT=$(claude -p "${FULLMSG}" &
+    OUTPUT=$(claude --model sonnet -p "${FULLMSG}" &
     spinner $!
     wait $!)
     if [ -t 1 ]; then
