@@ -41,23 +41,26 @@ spinner() {
 
 function expand() {
     if [ $1 = "cmt" ]; then
-        printf "Write a commit message for the currently staged git changes. (Do NOT include comments on unstaged changes.) Use conventional commit format."
+	cat ~/.ask/ask-cmt.txt
+        # printf "Write a commit message for the currently staged git changes. (Do NOT include comments on unstaged changes.) Use conventional commit format."
     fi
 }
 
-ASK=$(expand "$1")
+if [ -n "$1" ]; then
+  ASK=$(expand "$1")
+elif [ ! -t 0 ]; then
+  ASK=$(cat)
+else
+  echo "No question provided." >&2
+  echo "Usage: 'ask ""<query>"" [<topic>]" >&2
+  exit 1
+fi
 
 if [ "$ASK" = "" ]; then
     ASK="$1"
 fi
 
 TOPIC=$(printf "%q" "$2")
-
-if [ "$1" = "" ]; then
-    echo "No question provided." >&2
-    echo "Usage: 'ask ""<query>"" [<topic>]" >&2
-    exit 1
-fi
 
 # SET MODEL HERE
 MODEL="claude"      # options: claude, gemini, codex
