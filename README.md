@@ -4,7 +4,7 @@ A shell wrapper for headless AI CLIs. Get answers to life's important questions.
 
 Also a handy shortcut for getting commit messages, among other things.
 
-Currently supports Claude, Gemini, Codex--but, well... really just Claude tbh. (Gemini is flaky, and Codex is... Codex.) But have at it if you want to try them; just find `MODEL="claude"` and change it to either `gemini` or `codex`.
+Currently supports Claude, Gemini, Codex and Copilot. Works cleanest with Claude, which is the default. To change the default, find `MODEL="claude"` and change it to a different model.
 
 Whichever you use, you need to have that CLI installed and configured. Obvs.
 
@@ -16,7 +16,7 @@ Whichever you use, you need to have that CLI installed and configured. Obvs.
 ask "What do spiders do after work?"
 ```
 
-You'll get Claude's reply in your terminal. (Or Gemini/Codex--whichever you set it to. Claude's funnier, though.)
+You'll get the model's reply in your terminal, unless you redirected to a file. If redirected to a file, the file will include a standard template, with the date created and the original question at the bottom.
 
 ### Get Answers To Life's Big Questions
 
@@ -26,27 +26,23 @@ You'll get Claude's reply in your terminal. (Or Gemini/Codex--whichever you set 
 ask "Provide a comprehensive guide to the meaning of life. Include useful shortcuts. Don't create a file, just output here." > life-meaning-unlocked.md
 ```
 
-Note that when when you redirect output to a file, the script adds some info at the bottom, such as the date created and the original question. Because no way I'll remember tomorrow how that file got there.
+### Build Your Own Knowledge Base
 
-### Build Your Own Knowledge Base. Like, Why Not?
-
-You can create your own repository of help manuals, cheat sheets, quick-starts, comprehensive guides, or anything else worth having around. Claude's happy to oblige. Asking nicely is optional.
+Create your own repo of help manuals, cheat sheets, quick-starts, comprehensive guides, or anything else worth having around.
 
 ```
-ask "Please create a quick-start guide to becoming a full-stack developer in 24 hours. Include code examples. Don't create a file, just output here. Thanks tons, amigo." > full-stack-quickstart.md
+ask gemini "Please create a quick-start guide to becoming a full-stack developer in 24 hours. Include code examples. Don't create a file, just output here. Thanks tons, amigo." > full-stack-quickstart.md
 ```
-
-See? Very versatile.
 
 ### Generate Commit Messages
 
-To generate commit messages, stage the files you want to commit. Then do:
+To generate commit messages, stage the files you want to commit, and simply type use the "cmt" shortcut, which gets expanded to a commit message request.
 
 ```
 ask cmt
 ```
 
-Claude will get a message saying 'Create a commit message for the currently staged files,' and you'll get a handy commit message. Now you can ditch that GitLens subscription.
+The model will get a request to create a commit message for the currently staged files.
 
 ## Install
 

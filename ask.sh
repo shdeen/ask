@@ -1,5 +1,17 @@
 #!/bin/zsh
 
+
+# SET DEFAULT MODEL HERE
+MODEL="claude"      # options: claude, gemini, codex, copilot
+
+case "$1" in
+    codex|gemini|claude|copilot)
+        MODEL="$1"
+        shift # This removes the model name from the argument list
+        ;;
+esac
+
+
 format_duration() {
   local total_seconds=$1
   local minutes=$(((total_seconds % 3600) / 60))
@@ -41,8 +53,7 @@ spinner() {
 
 function expand() {
     if [ $1 = "cmt" ]; then
-	cat ~/.ask/ask-cmt.txt
-        # printf "Write a commit message for the currently staged git changes. (Do NOT include comments on unstaged changes.) Use conventional commit format."
+    	cat ~/.ask/ask-cmt.txt
     fi
 }
 
@@ -62,11 +73,9 @@ fi
 
 TOPIC=$(printf "%q" "$2")
 
-# SET MODEL HERE
-MODEL="claude"      # options: claude, gemini, codex
 
 PREPEND=""
-APPEND=""
+APPEND="Simply provide a response. Don't go browsing files or performing other commands that were not explicitly instructed."
 
 FULLMSG="${PREPEND} ${ASK} ${APPEND}"
 
@@ -74,31 +83,37 @@ BEGIN=$(date +"%Y-%m-%d %T")
 printf "\n=== START: $BEGIN ===\n" >&2
 echo "::pinging $MODEL to see if anyone's home::" >&2
 
+case "$MODEL" in
+    codex)
+        OUTPUT=$(codex exec "${FULLMSG}" &
+        spinner $!
+        wait $!)
+        ;;
+    gemini)
+        echo "Using Gemini..." >&2
+        OUTPUT=$(gemini -p "${FULLMSG}" &
+        spinner $!
+        wait $!)
+        ;;
+    claude)
+        OUTPUT=$(claude --model sonnet -p "${FULLMSG}" &
+        spinner $!
+        wait $!)
+        ;;
+    copilot)
+        OUTPUT=$(copilot -p "${FULLMSG}" &
+        spinner $!
+        wait $!)
+        ;;
+    *)
+        echo "No valid model selected." >&2
+        exit 1
+        ;;
+esac
 
-if [ "$MODEL" = "codex" ]; then
-    OUTPUT=$(codex exec "${FULLMSG}" &
-    spinner $!
-    wait $!)
-    if [ -t 1 ]; then
+
+if [ -t 1 ]; then
         printf "\n---\n"
-    fi
-elif [ "$MODEL" = "gemini" ]; then
-    OUTPUT=$(gemini -p "${FULLMSG}" &
-    spinner $!
-    wait $!)
-    if [ -t 1 ]; then
-        printf "\n---\n"
-    fi
-elif [ "$MODEL" = "claude" ]; then
-    OUTPUT=$(claude --model sonnet -p "${FULLMSG}" &
-    spinner $!
-    wait $!)
-    if [ -t 1 ]; then
-        printf "\n---\n"
-    fi
-else
-    echo "No valid model selected." >&2
-    exit 1
 fi
 
 echo "$OUTPUT"
