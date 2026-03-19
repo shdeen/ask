@@ -44,6 +44,21 @@ ask cmt
 
 The model will get a request to create a commit message for the currently staged files.
 
+#### Commit Message With Any Supported LLM
+
+Alternative to the above, include the LLM of your choice.
+
+```
+ask claude|gemini|codex|copilot cmt
+```
+
+**Example**:
+
+```
+ask claude cmt
+```
+
+
 ## Install
 
 Three options:
