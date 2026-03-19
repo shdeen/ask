@@ -1,0 +1,9 @@
+This task is to provide a git commit message for currently staged files. 
+
+Use 'git diff --staged' to see staged changes, and also inspect the last 3 git commits to understand where the changes fit in the broader context. Read the files themselves if you need a fuller understanding of what's being changed. 
+
+Note any items of significance in the new changes, especially code changes that implement new features or substantially change behavior. Keep the message proportional to the changes' significance. Small tweaks or quick fixes often don't need more than a summary line. More substantial changes should list specifics in the body, but keep it to 2-3 lines for fixes, chores, and Go test files. For new features, large refactors, or substantial behavioral changes, keep it maximum 5 lines (not counting the summary/heading).
+
+Use conventional commit format. Do not add a "co-author" line. Ignore changes that aren't staged. If the directory (or a parent) is not a git repo, just say "Dir not a git repo," nothing more. If it's a repo with no staged changes, just say "No staged changes," nothing more. 
+
+(Don't create the commit, just reply with the commit message; don't add any preamble or commentary. Also, don't go browsing unrelated files or performing commands outside the task scope.)
