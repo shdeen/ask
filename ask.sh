@@ -2,7 +2,7 @@
 
 
 # SET DEFAULT MODEL HERE
-MODEL="claude"      # options: claude, gemini, codex, copilot
+MODEL="copilot"      # options: claude, gemini, codex, copilot
 
 case "$1" in
     codex|gemini|claude|copilot)
@@ -75,9 +75,12 @@ TOPIC=$(printf "%q" "$2")
 
 
 PREPEND=""
-APPEND="Simply provide a response. Don't go browsing files or performing other commands that were not explicitly instructed."
+# APPEND="Simply provide a response. Don't go browsing files or performing other commands that were not explicitly instructed."
+APPEND=""
 
 FULLMSG="${PREPEND} ${ASK} ${APPEND}"
+
+echo "Asking ${MODEL}: ${FULLMSG}" >&2
 
 BEGIN=$(date +"%Y-%m-%d %T")
 printf "\n=== START: $BEGIN ===\n" >&2
@@ -85,14 +88,14 @@ echo "::pinging $MODEL to see if anyone's home::" >&2
 
 case "$MODEL" in
     codex)
-        OUTPUT=$(codex exec "${FULLMSG}" &
-        spinner $!
+        OUTPUT=$(codex exec -m gpt-5.2 "${FULLMSG}" &
+        # spinner $!
         wait $!)
         ;;
     gemini)
         echo "Using Gemini..." >&2
         OUTPUT=$(gemini -p "${FULLMSG}" &
-        spinner $!
+        # spinner $!
         wait $!)
         ;;
     claude)
@@ -101,7 +104,7 @@ case "$MODEL" in
         wait $!)
         ;;
     copilot)
-        OUTPUT=$(copilot -p "${FULLMSG}" &
+        OUTPUT=$(copilot --allow-all -s -p "${FULLMSG}" &
         spinner $!
         wait $!)
         ;;
