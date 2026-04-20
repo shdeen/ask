@@ -52,33 +52,48 @@ spinner() {
 }
 
 function expand() {
-    if [ $1 = "cmt" ]; then
+    if [ "$1" = "cmt" ]; then
     	cat ~/.ask/ask-cmt.txt
     fi
 }
 
+PREPEND=""
+# APPEND="Simply provide a response. Don't go browsing files or performing other commands that were not explicitly instructed."
+APPEND=""
+FULLMSG=""
+
+if [ ! -t 0 ]; then
+  APPEND="$(cat)"
+fi
+
 if [ -n "$1" ]; then
-  ASK=$(expand "$1")
-elif [ ! -t 0 ]; then
-  ASK=$(cat)
-else
-  echo "No question provided." >&2
-  echo "Usage: 'ask ""<query>"" [<topic>]" >&2
-  exit 1
+  ASK=$(expand "$1") 
 fi
 
 if [ "$ASK" = "" ]; then
     ASK="$1"
 fi
 
-TOPIC=$(printf "%q" "$2")
+
+if [ -n "$PREPEND" ]; then
+    PREPEND="$PREPEND\n---\n"
+fi
 
 
-PREPEND=""
-# APPEND="Simply provide a response. Don't go browsing files or performing other commands that were not explicitly instructed."
-APPEND=""
+if [ -n "$APPEND" ]; then
+    APPEND="\n---\n$APPEND"
+fi
 
-FULLMSG="${PREPEND} ${ASK} ${APPEND}"
+
+if [[ -n "$PREPEND" || -n "$ASK" || -n "$APPEND" ]]; then
+    FULLMSG="${PREPEND}${ASK}${APPEND}"
+fi
+
+if [ -z "$FULLMSG" ]; then
+  echo "No question provided." >&2
+  echo "Usage: 'ask ""<query>"" [<topic>]" >&2
+  exit 1
+fi
 
 echo "Asking ${MODEL}: ${FULLMSG}" >&2
 
